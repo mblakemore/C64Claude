@@ -24,7 +24,7 @@ C64ClaudeChat creates a bridge between a C64 BASIC chat client and the Claude 3.
 
 ## Requirements
 
-- [VICE Emulator](https://vice-emu.sourceforge.io/) (tested with v3.6)
+- [VICE Emulator](https://vice-emu.sourceforge.io/) (tested with v3.9)
 - Python 3.6+
 - Anthropic API key for Claude 3.7 Sonnet
 
