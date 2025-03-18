@@ -102,6 +102,38 @@ On the C64:
 - Claude's responses are limited to 200 characters
 - Only ASCII characters are supported
 
+Here's a bulleted summary of the message/status memory locations used in the C64 Claude chat system:
+
+## Memory Locations
+
+  - `$C000 (49152)`: Incoming message buffer 
+    - First byte: Length of message
+    - Remaining bytes: ASCII characters of message
+  - `$C100 (49408)`: Outgoing message buffer
+    - First byte: Length of message
+    - Remaining bytes: ASCII characters of message
+  - `$C200 (49664)`: Message status byte
+    - `0`: No message / message completed
+    - `1`: Partial message chunk (more chunks coming)
+    - `2`: Last chunk of message
+
+## Message Flow
+  - Python script writes to incoming buffer (`$C000`)
+  - C64 program reads from incoming buffer
+  - C64 program writes to outgoing buffer (`$C100`)
+  - Python script reads from outgoing buffer
+  - Status byte (`$C200`) coordinates multi-chunk message handling
+
+## Chunking Protocol
+  - Messages larger than 100 bytes are split into chunks
+  - Status byte signals if current chunk is final (2) or has more following (1)
+  - Each read/write operation clears buffer (sets length byte to 0)
+  
+## Further Enhancements
+
+Step 1: Get it working in the VICE emuilator. COMPLETE!
+Step 2: Use a C64 Cartridge / Expansion Port Prototype Board (https://www.ebay.com/itm/273790354324) and an ESP32 to get messages in and out of memory on real hardware. (In Progress)
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
