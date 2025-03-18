@@ -102,8 +102,6 @@ On the C64:
 - Claude's responses are limited to 200 characters
 - Only ASCII characters are supported
 
-Here's a bulleted summary of the message/status memory locations used in the C64 Claude chat system:
-
 ## Memory Locations
 
   - `$C000 (49152)`: Incoming message buffer 
