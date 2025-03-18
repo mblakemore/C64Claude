@@ -5,13 +5,21 @@
 The C64 uses PETSCII (PET Standard Code of Information Interchange) which is fundamentally different from ASCII:
 
 10 print chr$(147)
+
 120 let c=int(25*rnd(0))+1
+
 130 let z=asc("z")
+
 135 print "enter your message and i will code it"
+
 136 print
+
 137 print "use a ";chr$(34);":";chr$(34);" to end code."
+
 138 print
+
 140 get a$:if a$="" then 140
+
 
 
 ## 1. Case Sensitivity Reversal
@@ -30,11 +38,17 @@ The C64 uses PETSCII (PET Standard Code of Information Interchange) which is fun
 
 Use `CHR$()` for control characters instead of embedding actual control codes:
 
+
 Clear screen: chr$(147) - Clears the screen
+
 Home: chr$(19) - Moves cursor to top-left
+
 Cursor down: chr$(17) - Moves cursor down one line
+
 Cursor right: chr$(29) - Moves cursor right one space
+
 Reverse on: chr$(18) - Enables reverse video
+
 Reverse off: chr$(146) - Disables reverse video
 
 ## 4. Color Codes
@@ -43,9 +57,13 @@ Set text colors with `CHR$()` instead of using color controls directly:
 
 
 10 print chr$(144) "black text"
+
 20 print chr$(5) "white text"
+
 30 print chr$(28) "red text"
+
 40 print chr$(30) "green text"
+
 50 print chr$(31) "blue text"
 
 
@@ -124,32 +142,55 @@ C64 doesn't use do/loop/else/endif statements.
 ## Common Control Code Reference
 
 Clear Screen: chr$(147) - $93
+
 Home: chr$(19) - $13
+
 Cursor Down: chr$(17) - $11
+
 Cursor Up: chr$(145) - $91
+
 Cursor Left: chr$(157) - $9D
+
 Cursor Right: chr$(29) - $1D
+
 Insert: chr$(148) - $94
+
 Delete: chr$(20) - $14
+
 Return: chr$(13) - $0D
 
 ## Color Code Reference
 
 Black: chr$(144) - $90
+
 White: chr$(5) - $05
+
 Red: chr$(28) - $1C
+
 Cyan: chr$(159) - $9F
+
 Purple: chr$(156) - $9C
+
 Green: chr$(30) - $1E
+
 Blue: chr$(31) - $1F
+
 Yellow: chr$(158) - $9E
+
 Orange: chr$(129) - $81
+
 Brown: chr$(149) - $95
+
 Light Red: chr$(150) - $96
+
 Dark Gray: chr$(151) - $97
+
 Medium Gray: chr$(152) - $98
+
 Light Green: chr$(153) - $99
+
 Light Blue: chr$(154) - $9A
+
 Light Gray: chr$(155) - $9B
 
 Following these guidelines will ensure your BASIC programs are compatible with the C64 and take advantage of its unique features while avoiding common pitfalls.
