@@ -4,7 +4,9 @@
 ![Python 3.6+](https://img.shields.io/badge/Python-3.6%2B-green)
 ![MIT License](https://img.shields.io/badge/License-MIT-yellow)
 
-Chat with Claude 3.7 Sonnet AI directly from a Commodore 64! This project connects your C64 (running in VICE emulator) to the Anthropic Claude API, allowing for an authentic retro computing experience with cutting-edge AI.
+Chat with Claude 3.7 Sonnet AI directly from a Commodore 64!
+
+This project connects your C64 (running in VICE emulator) to the Anthropic Claude API, allowing for an authentic retro computing experience with cutting-edge AI.
 
 ![ClaudeChat](images/claudechat1.png)
 ![ClaudeChat](images/claudechat2.png)
