@@ -131,7 +131,7 @@ Here's a bulleted summary of the message/status memory locations used in the C64
   
 ## Further Enhancements
 
-Step 1: Get it working in the VICE emuilator. COMPLETE!
+Step 1: Get it working in the VICE emulator. COMPLETE!
 
 Step 2: Use a C64 Cartridge / Expansion Port Prototype Board (https://www.ebay.com/itm/273790354324) and an ESP32 to get messages in and out of memory on real hardware. (In Progress)
 
