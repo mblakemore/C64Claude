@@ -10,7 +10,7 @@ This project connects your C64 (running in VICE emulator) to either the Anthropi
 
 ![ClaudeChat](images/claudechat1.png)
 
-#### Reasoning model <think> block support for both Claude and DeepSeek-R1:
+#### Reasoning model `<think>` block support for both Claude and DeepSeek-R1:
 
 ![ClaudeChat-DeepSeek-R1-Reasoning](images/claudechat3.png)
 ![ClaudeChat-Claude-Reasoning](images/claudechat4.png)
