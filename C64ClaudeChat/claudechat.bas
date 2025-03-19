@@ -8,17 +8,20 @@
 110 mi = 49152 : rem incoming message at $c000 (49152)
 120 mo = 49408 : rem outgoing message at $c100 (49408)
 130 ms = 49664 : rem message status at $c200 (49664): 0=none, 1=chunk, 2=last chunk
-140 gosub 1000 : rem initialize variables
+140 mt = 50176 : rem thinking message at $c300 (50176)
+150 ts = 50432 : rem thinking status at $c400 (50432): 0=none, 1=chunk, 2=last chunk
+160 gosub 1000 : rem initialize variables
 
-150 rem display welcome message
-160 ms$ = "welcome!"
-170 pf$ = chr$(156) + "sys: " + chr$(5) : rem purple "sys:" prefix, white message
-180 gosub 8000 : rem wrap the message with prefix
+170 rem display welcome message
+180 ms$ = "welcome!"
+190 pf$ = chr$(156) + "sys: " + chr$(5) : rem purple "sys:" prefix, white message
+200 gosub 8000 : rem wrap the message with prefix
 
-200 rem main loop
-210 gosub 2000 : rem check for new incoming messages
-220 gosub 3000 : rem input handling
-230 goto 200
+300 rem main loop
+310 if th = 1 then gosub 2500 : rem check for new thinking messages (if enabled)
+320 gosub 2000 : rem check for new incoming messages
+330 gosub 3000 : rem input handling
+340 goto 300
 
 1000 rem initialize variables
 1010 ln = 5    : rem chat display start line (after title and border)
@@ -31,23 +34,50 @@
 1070 next i
 1080 in$ = ""  : rem input buffer
 1090 ol = 0    : rem old length of incoming message
-1095 mw = 30   : rem max width for display
-1100 rem clear memory locations to prevent weird messages
-1110 poke mi, 0 : rem clear incoming message buffer
-1120 poke mo, 0 : rem clear outgoing message buffer
-1130 poke ms, 0 : rem clear message status
-1140 return
+1095 tl = 0    : rem old length of thinking message
+1100 mw = 30   : rem max width for display
+1110 rem clear memory locations to prevent weird messages
+1120 poke mi, 0 : rem clear incoming message buffer
+1130 poke mo, 0 : rem clear outgoing message buffer
+1140 poke ms, 0 : rem clear message status
+1150 poke mt, 0 : rem clear thinking message buffer
+1160 poke ts, 0 : rem clear thinking status
+1162 th = 1    : rem thinking status (1=enabled, 0=disabled)
+1165 rem ignore first few reads to avoid garbage data
+1166 for i = 1 to 10
+1167   gosub 1500 : rem small delay
+1168 next i
+1170 return
+
+1500 rem small delay subroutine
+1510 for dl = 1 to 100 : next dl
+1520 return
 
 2000 rem check for new incoming messages
 2010 l = peek(mi) : rem first byte is length
 2020 if l = 0 or l = ol then return : rem no new message
-2030 ms$ = ""
-2040 for i = 1 to l
-2050   ms$ = ms$ + chr$(peek(mi+i))
-2060 next i
-2070 gosub 4000 : rem add message to chat history with prefix
-2080 ol = l
-2090 return
+2030 if l > 240 then poke mi, 0 : return : rem invalid length, clear and ignore
+2040 ms$ = ""
+2050 for i = 1 to l
+2060   ms$ = ms$ + chr$(peek(mi+i))
+2070 next i
+2080 gosub 4000 : rem add message to chat history with prefix
+2090 ol = l
+2095 poke mi, 0 : rem clear the buffer after reading
+2099 return
+
+2500 rem check for new thinking messages
+2510 l = peek(mt) : rem first byte is length
+2520 if l = 0 or l = tl then return : rem no new message
+2530 if l > 240 then poke mt, 0 : return : rem invalid length, clear and ignore
+2540 ms$ = ""
+2550 for i = 1 to l
+2560   ms$ = ms$ + chr$(peek(mt+i))
+2570 next i
+2580 gosub 4500 : rem add thinking message to chat history with prefix
+2590 tl = l
+2595 poke mt, 0 : rem clear the buffer after reading
+2599 return
 
 3000 rem input handling
 3010 poke 214, 22 : poke 211, 1 : sys 58732 : rem position cursor at start of input line
@@ -87,12 +117,19 @@
 4030 gosub 8000 : rem wrap the message with prefix
 4040 return
 
+4500 rem add thinking message to chat history (ms$ contains message)
+4510 rem no need to truncate message here - word wrap will handle it
+4520 pf$ = chr$(153) + "think: " + chr$(5) : rem light green "think:" prefix, white message
+4530 gosub 8000 : rem wrap the message with prefix
+4540 return
+
 5000 rem send message with fixed chunking support
 5010 if len(in$) = 0 then return
 5020 ms$ = in$ : rem store for display
 
 5025 rem check for commands
 5026 if left$(in$, 8) = "/border " then gosub 9000 : return
+5027 if left$(in$, 6) = "/think" then gosub 9400 : return
 5030 
 5040 rem send message in chunks of up to 100 characters
 5050 cl = 100 : rem chunk length
@@ -189,7 +226,7 @@
 7120 rem title bar - left border
 7130 print " "; chr$(221);
 7140 rem title in light blue (centered)
-7150 print chr$(154);"     c64 claude chat client ";chr$(5);"v1.0    ";chr$(221)
+7150 print chr$(154);"    c64 claude chat client ";chr$(5);"v1.1     ";chr$(221)
 7180 rem separator line - left border
 7190 print " "; chr$(221);
 7200 rem separator line (36 characters)
@@ -314,7 +351,23 @@
 9300 rem clear input line efficiently
 9310 poke 214, 22 : poke 211, 5 : sys 58732
 9320 for i = 1 to 36 : print " "; : next i
-9330 poke 214, 22 : poke 211, 5 : sys 58732
+9330 poke 214, 23 : poke 211, 5 : sys 58732
 9340 for i = 1 to 40 : print " "; : next i
-9350 poke 214, 23 : poke 211, 5 : sys 58732
 9360 return
+
+9400 rem think command handler - format: /think
+9410 th = 1 - th : rem toggle thinking status (1->0, 0->1)
+9420 if th = 1 then ms$ = "thinking messages enabled"
+9430 if th = 0 then ms$ = "thinking messages disabled"
+9440 rem add message to chat history
+9450 pf$ = chr$(156) + "sys: " + chr$(5) : rem purple "sys:" prefix, white message
+9460 gosub 8000 : rem wrap the message with prefix
+9470 rem reset the input buffer
+9480 in$ = ""
+9490 rem clear input line efficiently
+9500 poke 214, 22 : poke 211, 5 : sys 58732
+9510 for i = 1 to 36 : print " "; : next i
+9520 poke 214, 22 : poke 211, 5 : sys 58732
+9530 for i = 1 to 40 : print " "; : next i
+9540 poke 214, 23 : poke 211, 5 : sys 58732
+9550 return
