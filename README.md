@@ -10,10 +10,11 @@ This project connects your C64 (running in VICE emulator) to either the Anthropi
 
 ![ClaudeChat](images/claudechat1.png)
 
-** Now with full advanced reasoning <think> block support for both Claude and DeepSeek-R1: **
+### Now with full advanced reasoning <think> block support for both Claude and DeepSeek-R1:
 
 ![ClaudeChat-DeepSeek-R1-Reasoning](images/claudechat3.png)
 ![ClaudeChat-Claude-Reasoning](images/claudechat4.png)
+
 ## Overview
 
 C64ClaudeChat creates a bridge between a C64 BASIC chat client and modern AI systems. The system uses VICE's binary monitor interface to directly read and write to C64 memory, allowing seamless communication between the 1980s computer and modern AI models.
