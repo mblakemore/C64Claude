@@ -9,9 +9,9 @@ Chat with Claude 3.7 Sonnet or llama.cpp AI models directly from a Commodore 64!
 This project connects your C64 (running in VICE emulator) to either the Anthropic Claude API or a local llama.cpp server, allowing for an authentic retro computing experience with cutting-edge AI.
 
 ![ClaudeChat](images/claudechat1.png)
-![ClaudeChat](images/claudechat2.png)
 
-Now with full advanced reasoning <think> block support for both Claude and DeepSeek-R1:
+** Now with full advanced reasoning <think> block support for both Claude and DeepSeek-R1: **
+
 ![ClaudeChat-DeepSeek-R1-Reasoning](images/claudechat3.png)
 ![ClaudeChat-Claude-Reasoning](images/claudechat4.png)
 ## Overview
